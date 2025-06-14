@@ -95,7 +95,7 @@ function submit_with_formdata(args) {
                         processData: false,
                         contentType: false,
                         beforeSend: function () {
-
+                            loading({'text':'...'});
                         },
                         success: function (request) {
                             if (!request.hasOwnProperty('error')) {
@@ -115,7 +115,7 @@ function submit_with_formdata(args) {
                             message_error(errorThrown + ' ' + textStatus);
                         },
                         complete: function () {
-
+                             $.LoadingOverlay("hide");
                         }
                     });
                 }
@@ -210,4 +210,21 @@ function validate_text_box(args) {
             return decimals;
     }
     return true;
+}
+
+function loading(args){
+     if(!args.hasOwnProperty('fontawesome') ) {
+        args.fontawesome = 'fa-solid fa-circle-notch fa-spin';
+    }
+     if(!args.hasOwnProperty('text') ) {
+        args.text = 'Cargando...';
+    }
+    $.LoadingOverlay("show", {
+    image       : "",
+    fontawesome : args.fontawesome,
+    custom      : $("<div>", {
+            "class" : "loading",
+            "text"  : args.text
+        }),
+    });
 }
