@@ -344,11 +344,15 @@ $(function () {
 
     $('.btnRemoveAllProducts').on('click', function () {
         if (sale.detail.products.length === 0) return false;
-        dialog_action('Notificación', '¿Estas seguro de eliminar todos los items de tu detalle?', function () {
-            sale.detail.products = [];
-            sale.listProducts();
-        }, function () {
+        dialog_action( {
+            'content': '¿Estas seguro de eliminar todos los items de tu detalle?',
+            'success': function(){
+                sale.detail.products = [];
+                sale.listProducts();
+            },
+            'cancel': function() {
 
+            }
         });
     });
 
@@ -446,11 +450,15 @@ $(function () {
         var args = {
                 'params':params,
                 'success': function(request) {
-                    dialog_action('Notificación', '¿Desea imprimir la boleta de venta?', function () {
-                        window.open(request.print_url, '_blank');
-                        location.href = url_refresh;
-                    }, function () {
-                        location.href = url_refresh;
+                    dialog_action( {
+                        'content': '¿Desea imprimir la boleta de venta?',
+                        'success': function(){
+                            window.open(request.print_url, '_blank');
+                            location.href = url_refresh;
+                        },
+                        'cancel': function() {
+                             location.href = url_refresh;
+                        }
                     });
                 }
             };

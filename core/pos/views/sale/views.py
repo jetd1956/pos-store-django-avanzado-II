@@ -168,8 +168,6 @@ class SalePrintInvoiceView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             sale = Sale.objects.get(id=self.kwargs['pk'])
-
-            print(sale)
             context = {'sale': sale, 'height': 450 + sale.saledetail_set.all().count() * 10}
             pdf_file = printer.create_pdf(context=context, template_name='sale/format/ticket.html')
             return HttpResponse(pdf_file, content_type='application/pdf')

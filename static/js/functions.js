@@ -65,9 +65,6 @@ function submit_with_formdata(args) {
     if(!args.hasOwnProperty('content') ) {
         args.content = '¿Estas seguro de realizar la siguiente acción?';
     }
-    if(!args.hasOwnProperty('content') ) {
-        args.content = '¿Estas seguro de realizar la siguiente acción?';
-    }
     if(!args.hasOwnProperty('pathname') ) {
         args.pathname = pathname;  //variable definida en main.js
     }
@@ -143,12 +140,29 @@ function enable_tooltip() {
     });
 }
 
-function dialog_action(title, content, success, cancel) {
+function dialog_action(args) {
+   // parametros: title, content, success, cancel
+    if(!args.hasOwnProperty('type') ) {
+        args.type = 'blue';
+    }
+    if(!args.hasOwnProperty('theme') ) {
+        args.theme = 'modern';
+    }
+    if(!args.hasOwnProperty('title') ) {
+        args.title = 'Confirmación';
+    }
+    if(!args.hasOwnProperty('icon') ) {
+        args.icon = 'fas fa-info-circle';
+    }
+    if(!args.hasOwnProperty('content') ) {
+        args.content = '¿Estas seguro de realizar la siguiente acción?';
+    }
     $.confirm({
-        theme: 'modern',
-        title: title,
-        icon: 'fas fa-info-circle',
-        content: content,
+        type: args.type,
+        theme: args.theme,
+        title: args.title,
+        icon: args.icon,
+        content: args.content,
         columnClass: 'small',
         typeAnimated: true,
         cancelButtonClass: "btn-primary",
@@ -159,14 +173,14 @@ function dialog_action(title, content, success, cancel) {
                 text: "Si",
                 btnClass: 'btn-primary',
                 action: function () {
-                    success();
+                    args.success();
                 }
             },
             danger: {
                 text: "No",
                 btnClass: 'btn-red',
                 action: function () {
-                    cancel();
+                    args.cancel();
                 }
             },
         }
