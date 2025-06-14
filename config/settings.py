@@ -50,7 +50,9 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'widget_tweaks'
+    'widget_tweaks',
+    'django_cleanup.apps.CleanupConfig',
+
 ]
 
 LOCAL_APPS = [
