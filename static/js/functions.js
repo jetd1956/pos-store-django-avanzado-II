@@ -1,17 +1,33 @@
-function alert_sweetalert(type, title, message, callback, timer) {
-    if ($.isEmptyObject(message)) {
-        html = '';
+function alert_sweetalert(args) {
+    //type, title, message, callback, timer
+    // si dentro de mi diccinario no esta....
+    if(!args.hasOwnProperty('type')){
+        args.type = 'success';
     }
+    if(!args.hasOwnProperty('title')){
+        args.title = 'Notificación';
+    }
+    if(args.hasOwnProperty('message')){
+        args.html = '';
+    } else {
+        args.message = '';
+    }
+    if(!args.hasOwnProperty('timer')){
+        args.timer = null;
+    }
+    //console.log(args);
     Swal.fire({
-        icon: type,
-        title: title,
-        text: message,
+        icon: args.type,
+        title: args.title,
+        text: args.message,
+        html: args.html,
         grow: true,
         showCloseButton: true,
-        allowOutsideClick: true,
-        timer: timer
+        //allowOutsideClick: true,
+        timer: args.timer
     }).then((result) => {
-        callback();
+        console.log(args.callback());
+        args.callback();
     });
 }
 
@@ -19,18 +35,48 @@ function message_error(message) {
     var content = message;
     if (typeof (message) === "object") {
         content = JSON.stringify(message);
-    }
-    alert_sweetalert('error', 'Error', content, function () {
-    }, 2000);
+    };
+    alert_sweetalert({
+        'type': 'error',
+        'message': content,
+        'title': 'Error',
+        //'html': '<p><b>hola</b> a todos </p>',
+        'callback': function () {
+
+        },
+        'timer': 2000
+    });
 }
 
-function submit_with_formdata(title, content, pathname, params, success) {
+function submit_with_formdata(args) {
+   //title, content, pathname, params, success
+    if(!args.hasOwnProperty('type') ) {
+        args.type = 'blue';
+    }
+    if(!args.hasOwnProperty('theme') ) {
+        args.theme = 'modern';
+    }
+    if(!args.hasOwnProperty('title') ) {
+        args.tile = 'Notificación';
+    }
+    if(!args.hasOwnProperty('icon') ) {
+        args.icon = 'fas fa-info-circle';
+    }
+    if(!args.hasOwnProperty('content') ) {
+        args.content = '¿Estas seguro de realizar la siguiente acción?';
+    }
+    if(!args.hasOwnProperty('content') ) {
+        args.content = '¿Estas seguro de realizar la siguiente acción?';
+    }
+    if(!args.hasOwnProperty('pathname') ) {
+        args.pathname = pathname;  //variable definida en main.js
+    }
     $.confirm({
-        // type: 'blue',
-        theme: 'modern',
-        title: title,
-        icon: 'fas fa-info-circle',
-        content: content,
+        type: args.type,
+        theme: args.theme,
+        title: args.tile,
+        icon: args.icon,
+        content: args.content,
         columnClass: 'small',
         typeAnimated: true,
         cancelButtonClass: 'btn-primary',
@@ -42,8 +88,8 @@ function submit_with_formdata(title, content, pathname, params, success) {
                 btnClass: 'btn-primary',
                 action: function () {
                     $.ajax({
-                        url: pathname,
-                        data: params,
+                        url: args.pathname,
+                        data: args.params,
                         type: 'POST',
                         dataType: 'json',
                         headers: {
@@ -56,7 +102,14 @@ function submit_with_formdata(title, content, pathname, params, success) {
                         },
                         success: function (request) {
                             if (!request.hasOwnProperty('error')) {
-                                success(request);
+                                if (args.hasOwnProperty('success')) {
+                                    args.success(request);
+                                }
+                                // si no se manda una funcion para que haga algo entonces
+                                    // se direcciona a donde indica data-url que esta en el formulario
+                                else {
+                                    location.href = $(args.form).attr('data-url');
+                                }
                                 return false;
                             }
                             message_error(request.error);
@@ -120,15 +173,15 @@ function dialog_action(title, content, success, cancel) {
     });
 }
 
-function validate_text_box(event, type) {
-    var key = event.keyCode || event.which;
+function validate_text_box(args) {
+    var key = args.event.keyCode || args.event.which;
     var numbers = (key > 47 && key < 58) || key === 8;
     var numbers_spaceless = key > 47 && key < 58;
     var letters = !((key !== 32) && (key < 65) || (key > 90) && (key < 97) || (key > 122 && key !== 241 && key !== 209 && key !== 225 && key !== 233 && key !== 237 && key !== 243 && key !== 250 && key !== 193 && key !== 201 && key !== 205 && key !== 211 && key !== 218)) || key === 8;
     var letters_spaceless = !((key < 65) || (key > 90) && (key < 97) || (key > 122 && key !== 241 && key !== 209 && key !== 225 && key !== 233 && key !== 237 && key !== 243 && key !== 250 && key !== 193 && key !== 201 && key !== 205 && key !== 211 && key !== 218)) || key === 8;
     var decimals = ((key > 47 && key < 58) || key === 8 || key === 46);
 
-    switch (type) {
+    switch (args.type) {
         case "numbers":
             return numbers;
         case "numbers_spaceless":

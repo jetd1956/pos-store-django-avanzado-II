@@ -44,4 +44,5 @@ var category = {
 
 $(function () {
     category.list();
+
 });

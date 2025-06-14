@@ -18,16 +18,16 @@ $(function () {
 
     $('input[name="names"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'letters');
+            return validate_text_box({'event': e, 'type': 'letters'});
         });
 
     $('input[name="dni"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers');
+            return validate_text_box({'event': e, 'type': 'numbers'});
         });
 
     $('input[name="mobile"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers');
+            return validate_text_box({'event': e, 'type': 'numbers'});
         });
 });

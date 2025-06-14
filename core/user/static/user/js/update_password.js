@@ -16,8 +16,14 @@ $(function () {
     $('form').on('submit', function (e) {
         e.preventDefault();
         var form = $(this)[0];
-        submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, new FormData(form), function () {
-            location.href = $(form).attr('data-url');
-        });
+        var args= {
+                        'params': new FormData(form),
+                        'form': form
+                    };
+
+        submit_with_formdata(args);
+        //submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, new FormData(form), function () {
+        //    location.href = $(form).attr('data-url');
+        //});
     });
 });

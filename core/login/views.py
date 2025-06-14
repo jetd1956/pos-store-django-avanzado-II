@@ -42,6 +42,7 @@ class LoginResetPasswordView(FormView):
 
     def send_email_reset_password(self, user):
         with transaction.atomic():
+            print(settings.LOGIN_URL)
             ABSOLUTE_ROOT_URL = self.request.build_absolute_uri('/').strip('/')
             user.is_change_password = True
             user.email_reset_token = user.generate_token_email()
@@ -70,6 +71,7 @@ class LoginResetPasswordView(FormView):
         try:
             form = self.get_form()
             if form.is_valid():
+                print('envio mail')
                 self.send_email_reset_password(form.get_user())
             else:
                 data['error'] = form.errors

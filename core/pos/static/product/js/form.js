@@ -15,7 +15,7 @@ $(function () {
             step: 1,
         })
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers');
+           return validate_text_box({'event': e, 'type': 'numbers'});
         });
 
     $('input[name="price"]')
@@ -32,7 +32,7 @@ $(function () {
             $('input[name="pvp"]').trigger("touchspin.updatesettings", {min: parseFloat($(this).val())});
         })
         .on('keypress', function (e) {
-            return validate_text_box(e, 'decimals');
+            return validate_text_box({'event': e, 'type': 'decimals'});
         });
 
     $('input[name="pvp"]')
@@ -46,7 +46,7 @@ $(function () {
             prefix: '$'
         })
         .on('keypress', function (e) {
-            return validate_text_box(e, 'decimals');
+            return validate_text_box({'event': e, 'type': 'decimals'});
         });
 
     input_is_service.on('change', function () {
@@ -61,7 +61,7 @@ $(function () {
 
     $('input[name="code"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers_letters');
+            return validate_text_box({'event': e, 'type': 'numbers_letters'});
         })
         .on('keyup', function (e) {
             var value = $(this).val();

@@ -117,7 +117,7 @@ DATABASES = {
     #'default': env.db()
     'default': get_db_config(),
 }
-print('DATABASES ', DATABASES)
+#print('DATABASES ', DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

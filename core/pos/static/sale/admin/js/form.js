@@ -120,7 +120,7 @@ var sale = {
                         max: stock
                     })
                     .on('keypress', function (e) {
-                        return validate_text_box(e, 'numbers');
+                        return validate_text_box({'event': e, 'type': 'numbers'});
                     });
 
                 tr.find('input[name="dscto_unitary"]')
@@ -134,7 +134,7 @@ var sale = {
                         postfix: "0.00"
                     })
                     .on('keypress', function (e) {
-                        return validate_text_box(e, 'decimals');
+                        return validate_text_box({'event': e, 'type': 'decimals'});
                     });
             },
             initComplete: function (settings, json) {
@@ -209,25 +209,34 @@ $(function () {
         var form = $(this)[0];
         var params = new FormData(form);
         params.append('action', 'create_client');
-        submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, params, function (request) {
-            select_client.select2('trigger', 'select', {data: request});
-            $('#myModalClient').modal('hide');
-        });
+        var args = {
+            'params': params,
+            'success': function(request) {
+                select_client.select2('trigger', 'select', {data: request});
+                $('#myModalClient').modal('hide');
+            }
+        };
+        submit_with_formdata(args);
+
+        //submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, params, function (request) {
+        //    select_client.select2('trigger', 'select', {data: request});
+        //    $('#myModalClient').modal('hide');
+        //});
     });
 
     $('input[name="names"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'letters');
+            return validate_text_box({'event': e, 'type': 'letters'});
         });
 
     $('input[name="dni"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers');
+            return validate_text_box({'event': e, 'type': 'numbers'});
         });
 
     $('input[name="mobile"]')
         .on('keypress', function (e) {
-            return validate_text_box(e, 'numbers');
+            return validate_text_box({'event': e, 'type': 'numbers'});
         });
 
     // Products
@@ -395,7 +404,7 @@ $(function () {
             sale.calculateInvoice();
         })
         .on('keypress', function (e) {
-            return validate_text_box(e, 'decimals');
+            return validate_text_box({'event': e, 'type': 'decimals'});
         });
 
     input_cash
@@ -412,7 +421,7 @@ $(function () {
             sale.calculateInvoice();
         })
         .on('keypress', function (e) {
-            return validate_text_box(e, 'decimals');
+            return validate_text_box({'event': e, 'type': 'decimals'});
         });
 
     input_date_joined.datetimepicker({
@@ -434,13 +443,26 @@ $(function () {
         var params = new FormData(form);
         params.append('products', JSON.stringify(sale.detail.products));
         var url_refresh = $(this).attr('data-url');
-        submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, params, function (request) {
-            dialog_action('Notificación', '¿Desea imprimir la boleta de venta?', function () {
-                window.open(request.print_url, '_blank');
-                location.href = url_refresh;
-            }, function () {
-                location.href = url_refresh;
-            });
-        });
+        var args = {
+                'params':params,
+                'success': function(request) {
+                    dialog_action('Notificación', '¿Desea imprimir la boleta de venta?', function () {
+                        window.open(request.print_url, '_blank');
+                        location.href = url_refresh;
+                    }, function () {
+                        location.href = url_refresh;
+                    });
+                }
+            };
+        submit_with_formdata(args);
+
+        //submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, params, function (request) {
+        //    dialog_action('Notificación', '¿Desea imprimir la boleta de venta?', function () {
+        //        window.open(request.print_url, '_blank');
+        //        location.href = url_refresh;
+        //    }, function () {
+        //        location.href = url_refresh;
+        //    });
+        //});
     });
 });

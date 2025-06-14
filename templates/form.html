@@ -59,9 +59,15 @@
                 $('form').on('submit', function (e) {
                     e.preventDefault();
                     var form = $(this)[0];
-                    submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, new FormData(form), function () {
-                        location.href = $(form).attr('data-url');
-                    });
+                    // video 6 django avanzado II
+                    var args = {
+                        'params': new FormData(form),
+                        'form': form
+                    };
+                    submit_with_formdata(args);
+                    //submit_with_formdata('Notificación', '¿Estas seguro de realizar la siguiente acción?', pathname, new FormData(form), function () {
+                    //    location.href = $(form).attr('data-url');
+                    //});
                 });
             });
         </script>
